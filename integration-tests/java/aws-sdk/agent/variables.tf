@@ -7,11 +7,11 @@ variable "collector_layer_name" {
 variable "sdk_layer_name" {
   type        = string
   description = "Name of published SDK layer"
-  default     = "opentelemetry-nodejs-wrapper"
+  default     = "opentelemetry-java-agent"
 }
 
 variable "function_name" {
   type        = string
   description = "Name of sample app function / API gateway"
-  default     = "hello-java-awssdk-agent"
+  default     = "metrics-java-agent"
 }
