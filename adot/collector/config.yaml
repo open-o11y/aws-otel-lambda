@@ -14,8 +14,6 @@ exporters:
     aws_auth:
       service: "aps"
       region: "us-east-1"
-    retry_on_failure:
-      enabled: false
 
 service:
   pipelines:
