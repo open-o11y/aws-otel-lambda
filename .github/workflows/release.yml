@@ -306,6 +306,6 @@ jobs:
         run: terraform destroy -auto-approve
         working-directory: ${{ matrix.terraform_directory }}
       - name: Destroy amp terraform
-        if: always()
+        if: ${{ matrix.name == 'java-awssdk-agent' && contains(matrix.amp_regions, matrix.aws_region)}}
         run: terraform destroy -auto-approve
         working-directory: ${{ matrix.amp_terraform_directory }}
