@@ -176,7 +176,7 @@ jobs:
         run: |
           cp ${{ matrix.expected_metric_template }} test-framework/validator/src/main/resources/expected-data-template/ampExpectedTrace.mustache
           cd test-framework
-          ./gradlew :validator:run --args="-c prometheus-static-metric-validation.yml -cortex-instance-endpoint ${{ secrets.AMP_ENDPOINT }} --region $AWS_REGION"
+          ./gradlew :validator:run --args="-c prometheus-static-metric-validation.yml -cortex-instance-endpoint ${{ steps.extract-endpoint.outputs.stdout }} --region $AWS_REGION"
       - name: Destroy terraform
         if: always()
         run: terraform destroy -auto-approve
