@@ -23,6 +23,7 @@ jobs:
             language: java
             build_directory: java
             build_command: ./build.sh
+            replace_command: ./replace.sh
             terraform_directory: integration-tests/java/aws-sdk/agent
             amp_terraform_directory: integration-tests/amp-terraform
             expected_trace_template: adot/utils/expected-templates/java-awssdk-agent.json
@@ -134,6 +135,12 @@ jobs:
         run: ${{ matrix.build_command }}
         working-directory: ${{ matrix.build_directory }}
       - uses: hashicorp/setup-terraform@v1
+      - name: Initialize amp terraform and replace Java agent collector config
+        if: ${{ matrix.name == 'java-awssdk-agent' }}
+        run: |
+          terraform init
+          terraform apply -auto-approve
+          ${{ matrix.replace_command }}
       - name: Initialize terraform
         run: terraform init
         working-directory: ${{ matrix.terraform_directory }}
@@ -155,6 +162,7 @@ jobs:
         run: terraform output -raw api-gateway-url
         working-directory: ${{ matrix.terraform_directory }}
       - name: Extract amp endpoint
+        if: ${{ matrix.name == 'java-awssdk-agent' }}
         id: extract-amp-endpoint
         run: terraform output -raw amp_endpoint
         working-directory: ${{ matrix.amp_terraform_directory }}
