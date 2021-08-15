@@ -184,4 +184,5 @@ jobs:
       - name: Destroy amp terraform
         if: ${{ matrix.name == 'java-awssdk-agent' && contains(matrix.amp_regions, matrix.aws_region)}}
         run: terraform destroy -auto-approve
+        rm custom-config-layer.zip
         working-directory: ${{ matrix.amp_terraform_directory }}

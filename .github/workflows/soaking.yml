@@ -224,4 +224,5 @@ jobs:
       - name: Destroy amp terraform
         if: always()
         run: terraform destroy -auto-approve
+        rm custom-config-layer.zip
         working-directory: ${{ matrix.amp_terraform_directory }}
