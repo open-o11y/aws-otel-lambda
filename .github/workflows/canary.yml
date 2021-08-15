@@ -27,7 +27,6 @@ jobs:
             language: java
             build_directory: java
             build_command: ./build.sh
-            replace_command: ./replace.sh
             terraform_directory: sample-apps/java-agent-aws-sdk-terraform
             amp_regions: [ "us-west-1", "us-east-1", "us-east-2", "eu-central-1", "eu-west-1"]
             amp_terraform_directory: integration-tests/amp-terraform
@@ -138,7 +137,6 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve
-          ${{ matrix.replace_command }}
         working-directory: ${{ matrix.amp_terraform_directory }}
       - name: Initialize terraform
         run: terraform init

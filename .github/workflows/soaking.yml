@@ -23,7 +23,6 @@ jobs:
             language: java
             build_directory: java
             build_command: ./build.sh
-            replace_command: ./replace.sh
             terraform_directory: integration-tests/java/aws-sdk/agent
             amp_terraform_directory: integration-tests/amp-terraform
             expected_trace_template: adot/utils/expected-templates/java-awssdk-agent.json
@@ -140,7 +139,6 @@ jobs:
         run: |
           terraform init
           terraform apply -auto-approve
-          ${{ matrix.replace_command }}
         working-directory: ${{ matrix.amp_terraform_directory }}
       - name: Initialize terraform
         run: terraform init

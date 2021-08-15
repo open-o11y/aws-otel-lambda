@@ -7,7 +7,7 @@ receivers:
 exporters:
   logging:
   awsxray:
-  awsprometheusremotewrite: 
+  awsprometheusremotewrite:
     endpoint: "<remote_write_endpoint>"
     aws_auth:
       service: "aps"
