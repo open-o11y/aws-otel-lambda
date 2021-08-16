@@ -6,6 +6,6 @@ variable "function_name" {
 
 variable "path_to_custom_collector_config_zip" {
   type        = string
-  description = "File path to the zipped custom collector config.yaml file. Leave as default to use the default collector config (without AMP)"
+  description = "The relative path to the zip file containing a custom collector configuration, named config.yaml, with your own AMP remote write endpoint and region written in. Leave as default to use the default collector config (no AMP enabled)"
   default = null 
 }
