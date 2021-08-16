@@ -1,5 +1,6 @@
 locals {
-  # TODO before this sample app will work: update all arns to the updated java-agent layer with the AWS PRW exporter 
+  # TODO: update all arns to the updated java-agent layer with the AWS PRW exporter 
+  # TODO: remove us-east-2 arn which is only for testing 
   sdk_layer_arns = {
     "ap-northeast-1" = "arn:aws:lambda:ap-northeast-1:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
     "ap-northeast-2" = "arn:aws:lambda:ap-northeast-2:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
@@ -14,7 +15,7 @@ locals {
     "eu-west-3"      = "arn:aws:lambda:eu-west-3:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
     "sa-east-1"      = "arn:aws:lambda:sa-east-1:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
     "us-east-1"      = "arn:aws:lambda:us-east-1:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
-    "us-east-2"      = "arn:aws:lambda:us-east-2:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
+    "us-east-2"      = "arn:aws:lambda:us-east-2:614732350472:layer:opentelemetry-java-agent:16"
     "us-west-1"      = "arn:aws:lambda:us-west-1:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
     "us-west-2"      = "arn:aws:lambda:us-west-2:901920570463:layer:aws-otel-java-agent-ver-1-2-0:2"
   }

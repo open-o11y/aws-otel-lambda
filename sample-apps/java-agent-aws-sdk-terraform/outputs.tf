@@ -3,5 +3,9 @@ output "api-gateway-url" {
 }
 
 output "collector_config_layer_arn" {
-  value = aws_lambda_layer_version.collector_config_layer[0].arn
+  value = aws_lambda_layer_version.collector_config_layer.arn
+}
+
+output "amp_endpoint" {
+  value = aws_prometheus_workspace.test_amp_workspace.prometheus_endpoint
 }

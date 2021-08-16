@@ -3,18 +3,19 @@ data "aws_region" "current" {}
 module "test" {
   source = "../../../../opentelemetry-lambda/java/integration-tests/aws-sdk/agent"
 
-  enable_collector_layer = false
-  sdk_layer_name         = var.sdk_layer_name
-  function_name          = var.function_name
+  enable_collector_layer     = false
+  sdk_layer_name             = var.sdk_layer_name
+  function_name              = var.function_name
   collector_config_layer_arn = aws_lambda_layer_version.collector_config_layer.arn
-  tracing_mode = "Active"
+  tracing_mode               = "Active"
 }
 
 # set up an AMP workspace used only for integration tests (assume customer already has their own AMP workspace endpoint)
 resource "aws_prometheus_workspace" "test_amp_workspace" {}
 
 data "archive_file" "init" {
-  type        = "zip"
+  type       = "zip"
+  depends_on = [aws_prometheus_workspace.test_amp_workspace, data.aws_region.current.name]
   source {
     content  = <<EOT
 receivers:
@@ -58,6 +59,7 @@ resource "aws_iam_role_policy_attachment" "test_amp" {
 }
 
 resource "aws_lambda_layer_version" "collector_config_layer" {
+  depends_on          = [data.archive_file.init]
   layer_name          = "custom-config-layer"
   filename            = "${path.module}/custom-config-layer.zip"
   compatible_runtimes = ["java8", "java8.al2", "java11"]
