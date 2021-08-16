@@ -10,14 +10,41 @@ module "test" {
   tracing_mode = "Active"
 }
 
-
 # set up an AMP workspace used only for integration tests (assume customer already has their own AMP workspace endpoint)
-resource "aws_prometheus_workspace" "test_amp_workspace" {
+resource "aws_prometheus_workspace" "test_amp_workspace" {}
 
-    // create a config.yaml file with the AMP "endpoint" and "region", and zips it
-    provisioner "local-exec" {
-        command = "sed 's@<remote_write_endpoint>@${self.prometheus_endpoint}api/v1/remote_write@g; s@<workspace_region>@${data.aws_region.current.name}@g' preformatted_config.yaml > config.yaml; zip custom-config-layer.zip config.yaml; rm config.yaml; "
-    }
+data "archive_file" "init" {
+  type        = "zip"
+  source {
+    content  = <<EOT
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  logging:
+  awsxray:
+  awsprometheusremotewrite:
+    endpoint: "${aws_prometheus_workspace.test_amp_workspace.prometheus_endpoint}api/v1/remote_write"
+    aws_auth:
+      service: "aps"
+      region: "${data.aws_region.current.name}"
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [awsxray]
+    metrics:
+      receivers: [otlp]
+      exporters: [logging, awsprometheusremotewrite]
+EOT
+    filename = "config.yaml"
+  }
+
+  output_path = "${path.module}/custom-config-layer.zip"
 }
 
 resource "aws_iam_role_policy_attachment" "test_xray" {
@@ -31,9 +58,9 @@ resource "aws_iam_role_policy_attachment" "test_amp" {
 }
 
 resource "aws_lambda_layer_version" "collector_config_layer" {
-  layer_name          = "custom_collector_config"
+  layer_name          = "custom-config-layer"
   filename            = "${path.module}/custom-config-layer.zip"
   compatible_runtimes = ["java8", "java8.al2", "java11"]
   license_info        = "Apache-2.0"
-  source_code_hash    = filebase64sha256("${path.module}/custom-config-layer.zip")
+  // source_code_hash    = filebase64sha256("${path.module}/custom-config-layer.zip")
 }
