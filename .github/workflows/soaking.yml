@@ -242,7 +242,8 @@ jobs:
             -e AWS_ACCESS_KEY_ID
             -e AWS_SECRET_ACCESS_KEY
             -e AWS_SESSION_TOKEN
-            public.ecr.aws/u4v1i0d4/lambdatesting:latest -n ${{ env.TERRAFORM_LAMBDA_FUNCTION_NAME }}
+            public.ecr.aws/u4v1i0d4/lambdatesting:latest
+            -n ${{ env.TERRAFORM_LAMBDA_FUNCTION_NAME }}
             -e ${{ steps.extract-endpoint.outputs.stdout }}
             ${{ github.event.inputs.soak_config }} ${{ env.SOAKING_TEST_CONFIG }}
             -a ${{ matrix.architecture }}
