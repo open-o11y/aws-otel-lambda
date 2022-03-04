@@ -26,10 +26,10 @@ jobs:
         # workflow can only test one Sample App per Lambda Layer. We should
         # create a separate workflow to soak-test Layers with multiple
         # soak tests.
-        language: [ go, java, nodejs, python ]
+        language: [ go ]
         sample-app: [ aws-sdk ]
         instrumentation-type: [ wrapper ]
-        architecture: [ amd64, arm64 ]
+        architecture: [ arm64 ]
         include:
           # FIXME: (enowell) Same problem as above, we cannot Soak Test the
           # other java app (okhttp) because it will create its own Lambda Layer
@@ -242,10 +242,10 @@ jobs:
             -e AWS_ACCESS_KEY_ID
             -e AWS_SECRET_ACCESS_KEY
             -e AWS_SESSION_TOKEN
-            public.ecr.aws/aws-otel-test/lambda-soak:latest -n ${{ env.TERRAFORM_LAMBDA_FUNCTION_NAME }}
+            public.ecr.aws/u4v1i0d4/lambdatesting:latest -n ${{ env.TERRAFORM_LAMBDA_FUNCTION_NAME }}
             -e ${{ steps.extract-endpoint.outputs.stdout }}
             ${{ github.event.inputs.soak_config }} ${{ env.SOAKING_TEST_CONFIG }}
-            -a ${{ env.LAMBDA_FUNCTION_ARCH }}
+            -a ${{ matrix.architecture }}
       - name: Set output if layer Soak Tests has error
         id: set-layer-if-error-output
         if: ${{ failure() }}
