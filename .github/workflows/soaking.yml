@@ -126,7 +126,6 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: ${{ secrets.AWS_ASSUME_ROLE_ARN }}
           mask-aws-account-id: false
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
       - name: Patch ADOT
@@ -236,7 +235,7 @@ jobs:
           ./gradlew :validator:run --args="-c prometheus-static-metric-validation.yml --cortex-instance-endpoint ${{ steps.extract-amp-endpoint.outputs.stdout }} --region ${{ env.AWS_DEFAULT_REGION }}"
       - name: Run soak test
         run: >-
-          docker run 
+          docker run
             --rm
             -e AWS_DEFAULT_REGION
             -e AWS_ACCESS_KEY_ID
