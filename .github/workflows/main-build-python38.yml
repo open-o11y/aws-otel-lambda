@@ -34,7 +34,7 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: '^1.19.4'
-      - uses: aws-actions/configure-aws-credentials@v1-node16
+      - uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
           role-to-assume: ${{ secrets.INTEG_TEST_LAMBDA_ROLE_ARN }}
           role-duration-seconds: 1200
